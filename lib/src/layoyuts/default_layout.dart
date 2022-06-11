@@ -5,14 +5,16 @@ import 'package:provider/provider.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Widget child;
+  final PreferredSizeWidget? tabBar;
 
-  const DefaultLayout(this.child, {Key? key}) : super(key: key);
+  const DefaultLayout(this.child, {this.tabBar, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Navigator 2.0 sample"),
+        bottom: tabBar,
       ),
       drawer: Drawer(
         child: ListView(
