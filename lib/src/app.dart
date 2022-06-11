@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:navigator2_practice/src/navigator/app_navigator.dart';
+import 'package:navigator2_practice/src/router/router_state.dart';
 import 'package:navigator2_practice/src/router/app_router.dart';
-import 'package:navigator2_practice/src/router/route_path.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
 import 'package:provider/provider.dart';
 
 /// The Widget that configures your application.
@@ -14,24 +14,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final AppNavigatorState _navigatorState =
-      AppNavigatorState(AppRoutePath.home());
+  final RouterState _routerState = RouterState(AppLocation.home());
   late final AppRouterDelegate _routerDelegate;
 
   @override
   void initState() {
     super.initState();
-    _routerDelegate = AppRouterDelegate(_navigatorState);
+    _routerDelegate = AppRouterDelegate(_routerState);
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<AppNavigatorState>.value(
-              value: _navigatorState)
+          ChangeNotifierProvider<RouterState>.value(value: _routerState)
         ],
-        child: Consumer<AppNavigatorState>(builder: (context, state, _) {
+        child: Consumer<RouterState>(builder: (context, state, _) {
           return MaterialApp.router(
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

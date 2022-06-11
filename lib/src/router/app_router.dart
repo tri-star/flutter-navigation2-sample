@@ -1,67 +1,44 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:navigator2_practice/src/navigator/app_navigator.dart';
+import 'package:navigator2_practice/src/router/router_state.dart';
 import 'package:navigator2_practice/src/pages/home_page.dart';
 import 'package:navigator2_practice/src/pages/second_page.dart';
 import 'package:navigator2_practice/src/pages/third_page.dart';
-import 'package:navigator2_practice/src/router/route_path.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
 
-class AppRouteInformationParser extends RouteInformationParser<AppRoutePath> {
-  @override
-  Future<AppRoutePath> parseRouteInformation(
-      RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location!);
-    if (uri.path == '/second') {
-      return AppRoutePath.second();
-    }
-    if (uri.path == '/third') {
-      return AppRoutePath.third();
-    }
-    return AppRoutePath.home();
-  }
-
-  @override
-  RouteInformation restoreRouteInformation(AppRoutePath routePath) {
-    if (routePath.isSecond) {
-      return const RouteInformation(location: '/second');
-    }
-    if (routePath.isThird) {
-      return const RouteInformation(location: '/third');
-    }
-    return const RouteInformation(location: '/');
-  }
-}
-
-class AppRouterDelegate extends RouterDelegate<AppRoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutePath> {
+class AppRouterDelegate extends RouterDelegate<AppLocation>
+    with ChangeNotifier {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
-  final AppNavigatorState navigatorState;
+  final RouterState routerState;
 
-  AppRouterDelegate(this.navigatorState)
+  AppRouterDelegate(this.routerState)
       : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  AppRoutePath get currentConfiguration => navigatorState.currentRoute;
+  AppLocation get currentConfiguration => routerState.currentRoute;
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      pages: _buildPages(navigatorState),
+      pages: _buildPages(routerState),
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
           return false;
         }
 
-        navigatorState.setRoute(AppRoutePath.home());
+        if (!routerState.canPop()) {
+          return false;
+        }
+        routerState.popRoute();
 
         return true;
       },
     );
   }
 
-  List<Page> _buildPages(AppNavigatorState state) {
+  List<Page> _buildPages(RouterState state) {
     List<Page> pages = [
       const HomePage(),
     ];
@@ -77,8 +54,17 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
   }
 
   @override
-  Future<void> setNewRoutePath(AppRoutePath configuration) async {
-    navigatorState.setRoute(configuration);
+  Future<void> setNewRoutePath(AppLocation configuration) async {
+    routerState.setRoute(configuration);
     return SynchronousFuture<void>(null);
+  }
+
+  @override
+  Future<bool> popRoute() {
+    if (!routerState.canPop()) {
+      return SynchronousFuture<bool>(false);
+    }
+    routerState.popRoute();
+    return SynchronousFuture<bool>(true);
   }
 }

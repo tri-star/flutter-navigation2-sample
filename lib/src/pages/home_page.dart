@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:navigator2_practice/src/layoyuts/default_layout.dart';
-import 'package:navigator2_practice/src/navigator/app_navigator.dart';
-import 'package:navigator2_practice/src/router/route_path.dart';
+import 'package:navigator2_practice/src/router/router_state.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends Page {
@@ -26,8 +26,8 @@ class HomePage extends Page {
                               MaterialStateProperty.all(Colors.blue[200]),
                         ),
                         onPressed: () {
-                          Provider.of<AppNavigatorState>(context, listen: false)
-                              .setRoute(AppRoutePath.second());
+                          Provider.of<RouterState>(context, listen: false)
+                              .pushRoute(AppLocation.second());
                         },
                         child: const Text('Second Page')),
                     TextButton(
@@ -37,8 +37,8 @@ class HomePage extends Page {
                               MaterialStateProperty.all(Colors.blue[200]),
                         ),
                         onPressed: () {
-                          Provider.of<AppNavigatorState>(context, listen: false)
-                              .setRoute(AppRoutePath.third());
+                          Provider.of<RouterState>(context, listen: false)
+                              .pushRoute(AppLocation.third());
                         },
                         child: const Text('Third Page'))
                   ])));

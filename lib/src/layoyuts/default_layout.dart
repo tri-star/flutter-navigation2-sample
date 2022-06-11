@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:navigator2_practice/src/navigator/app_navigator.dart';
+import 'package:navigator2_practice/src/router/router_state.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
 import 'package:provider/provider.dart';
 
 class DefaultLayout extends StatelessWidget {
@@ -13,8 +14,35 @@ class DefaultLayout extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Navigator 2.0 sample"),
       ),
-      body: Consumer<AppNavigatorState>(
-        builder: (context, naviGatorState, _) {
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: const Text("Home"),
+              onTap: () {
+                Provider.of<RouterState>(context, listen: false)
+                    .pushRoute(AppLocation.home());
+              },
+            ),
+            ListTile(
+              title: const Text("Second"),
+              onTap: () {
+                Provider.of<RouterState>(context, listen: false)
+                    .pushRoute(AppLocation.second());
+              },
+            ),
+            ListTile(
+              title: const Text("Third"),
+              onTap: () {
+                Provider.of<RouterState>(context, listen: false)
+                    .pushRoute(AppLocation.third());
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Consumer<RouterState>(
+        builder: (context, routerState, _) {
           return child;
         },
       ),

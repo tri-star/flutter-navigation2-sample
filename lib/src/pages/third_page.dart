@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:navigator2_practice/src/layoyuts/default_layout.dart';
+import 'package:navigator2_practice/src/router/router_state.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
+import 'package:provider/provider.dart';
 
 class ThirdPage extends Page {
   const ThirdPage() : super(key: const ValueKey('third'));
@@ -23,7 +26,8 @@ class ThirdPage extends Page {
                               MaterialStateProperty.all(Colors.amber[100]),
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Provider.of<RouterState>(context, listen: false)
+                              .popRoute();
                         },
                         child: const Text(
                           'Back',
