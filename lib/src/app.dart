@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:navigator2_practice/src/pages/home_page.dart';
-import 'package:navigator2_practice/src/pages/second_page.dart';
-import 'package:navigator2_practice/src/pages/third_page.dart';
-import 'package:navigator2_practice/src/router/route_definitions.dart';
-import 'package:navigator2_practice/src/router/router_state.dart';
-import 'package:navigator2_practice/src/router/app_router.dart';
-import 'package:navigator2_practice/src/router/app_location.dart';
+import 'pages/home_page.dart';
+import 'pages/second_page.dart';
+import 'pages/third_page.dart';
+import 'router/route_definitions.dart';
+import 'router/router_state.dart';
+import 'router/app_router.dart';
+import 'router/app_location.dart';
 import 'package:provider/provider.dart';
 
 /// The Widget that configures your application.

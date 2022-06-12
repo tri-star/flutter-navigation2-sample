@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:navigator2_practice/src/router/app_location.dart';
+import '../router/app_location.dart';
 
 class RouterState with ChangeNotifier {
   List<AppLocation> _history = [];

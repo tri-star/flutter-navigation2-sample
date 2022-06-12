@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:navigator2_practice/src/router/router_state.dart';
-import 'package:navigator2_practice/src/router/app_location.dart';
+import '../router/router_state.dart';
+import '../router/app_location.dart';
 import 'package:provider/provider.dart';
 
 class DefaultLayout extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:navigator2_practice/src/router/app_location.dart';
+import '../app_location.dart';
 import 'package:test/test.dart';
 
 void main() {

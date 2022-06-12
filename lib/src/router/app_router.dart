@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:navigator2_practice/src/router/route_definitions.dart';
-import 'package:navigator2_practice/src/router/router_state.dart';
-import 'package:navigator2_practice/src/pages/home_page.dart';
-import 'package:navigator2_practice/src/router/app_location.dart';
+import './route_definitions.dart';
+import './router_state.dart';
+import '../pages/home_page.dart';
+import '../router/app_location.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<AppLocation> {
   RouteDefinition definition;
