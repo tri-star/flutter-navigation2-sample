@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:navigator2_practice/src/pages/app_page.dart';
+import 'package:navigator2_practice/src/router/app_location.dart';
 import '../layoyuts/default_layout.dart';
-import '../router/router_state.dart';
-import '../router/app_location.dart';
+import '../lib/router/router_state.dart';
+import '../lib/router/app_location.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends AppPage {

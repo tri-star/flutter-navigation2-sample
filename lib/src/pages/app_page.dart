@@ -20,6 +20,8 @@ abstract class AppPage extends Page {
   Route createRoute(BuildContext context) {
     return PageRouteBuilder(
         settings: this,
+        transitionDuration: const Duration(milliseconds: 500),
+        reverseTransitionDuration: const Duration(milliseconds: 500),
         pageBuilder: (context, animation, secondaryAnimation) {
           return _buildTransition(context, animation, secondaryAnimation);
         });

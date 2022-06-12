@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'pages/home_page.dart';
 import 'pages/second_page.dart';
 import 'pages/third_page.dart';
-import 'router/route_definitions.dart';
-import 'router/router_state.dart';
-import 'router/app_router.dart';
+import 'lib/router/route_definitions.dart';
+import 'lib/router/router_state.dart';
+import 'lib/router/app_router.dart';
 import 'router/app_location.dart';
 import 'package:provider/provider.dart';
 

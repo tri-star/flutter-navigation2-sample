@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:navigator2_practice/src/lib/router/router_state.dart';
 import 'package:navigator2_practice/src/pages/app_page.dart';
 import '../layoyuts/default_layout.dart';
-import '../router/router_state.dart';
 import '../router/app_location.dart';
 import 'package:provider/provider.dart';
 

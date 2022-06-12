@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import './route_definitions.dart';
 import './router_state.dart';
-import '../pages/home_page.dart';
 import '../router/app_location.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<AppLocation> {
@@ -66,9 +65,7 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
   }
 
   List<Page> _buildPages(RouterState state) {
-    List<Page> pages = [
-      HomePage(),
-    ];
+    List<Page> pages = [routeDefinition.entries['/']!.pageBuilder()];
 
     for (final pathSignature in routeDefinition.entries.keys) {
       var result = UriPathParser.parse(
