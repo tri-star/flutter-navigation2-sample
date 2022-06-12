@@ -23,21 +23,21 @@ class DefaultLayout extends StatelessWidget {
               title: const Text("Home"),
               onTap: () {
                 Provider.of<RouterState>(context, listen: false)
-                    .pushRoute(AppLocation.home());
+                    .pushRoute(AppLocationHome());
               },
             ),
             ListTile(
               title: const Text("Second"),
               onTap: () {
                 Provider.of<RouterState>(context, listen: false)
-                    .pushRoute(AppLocation.second());
+                    .pushRoute(AppLocationSecond());
               },
             ),
             ListTile(
               title: const Text("Third"),
               onTap: () {
                 Provider.of<RouterState>(context, listen: false)
-                    .pushRoute(AppLocation.third());
+                    .pushRoute(AppLocationThird(activeIndex: 0));
               },
             ),
           ],

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:navigator2_practice/src/pages/home_page.dart';
+import 'package:navigator2_practice/src/pages/second_page.dart';
+import 'package:navigator2_practice/src/pages/third_page.dart';
+import 'package:navigator2_practice/src/router/route_definitions.dart';
 import 'package:navigator2_practice/src/router/router_state.dart';
 import 'package:navigator2_practice/src/router/app_router.dart';
 import 'package:navigator2_practice/src/router/app_location.dart';
@@ -14,13 +18,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final RouterState _routerState = RouterState(AppLocation.home());
-  late final AppRouterDelegate _routerDelegate;
+  final RouterState _routerState = RouterState(AppLocationHome());
+  late final AppRouter _router;
 
   @override
   void initState() {
     super.initState();
-    _routerDelegate = AppRouterDelegate(_routerState);
+
+    var routeDefinition = RouteDefinition({
+      '/': RouteEntry(pageBuilder: () => const HomePage()),
+      '/second': RouteEntry(pageBuilder: () => const SecondPage()),
+      '/third/:active_index': RouteEntry(pageBuilder: () => const ThirdPage()),
+    });
+
+    _router = AppRouter(routeDefinition, _routerState);
   }
 
   @override
@@ -42,8 +53,8 @@ class _MyAppState extends State<MyApp> {
             theme: ThemeData(),
             darkTheme: ThemeData.dark(),
             themeMode: ThemeMode.light,
-            routerDelegate: _routerDelegate,
-            routeInformationParser: AppRouteInformationParser(),
+            routerDelegate: _router.routerDelegate,
+            routeInformationParser: _router.routeInformationParser,
           );
         }));
   }

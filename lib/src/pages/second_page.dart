@@ -42,7 +42,7 @@ class SecondPage extends Page {
                         ),
                         onPressed: () {
                           Provider.of<RouterState>(context, listen: false)
-                              .pushRoute(AppLocation.third());
+                              .pushRoute(AppLocationThird(activeIndex: 0));
                         },
                         child: const Text(
                           'Third',

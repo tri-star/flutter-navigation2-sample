@@ -1,19 +1,46 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:navigator2_practice/src/router/route_definitions.dart';
 import 'package:navigator2_practice/src/router/router_state.dart';
 import 'package:navigator2_practice/src/pages/home_page.dart';
-import 'package:navigator2_practice/src/pages/second_page.dart';
-import 'package:navigator2_practice/src/pages/third_page.dart';
 import 'package:navigator2_practice/src/router/app_location.dart';
+
+class AppRouteInformationParser extends RouteInformationParser<AppLocation> {
+  RouteDefinition definition;
+
+  AppRouteInformationParser(this.definition);
+
+  @override
+  Future<AppLocation> parseRouteInformation(
+      RouteInformation routeInformation) async {
+    final uri = Uri.parse(routeInformation.location!);
+
+    for (final pathSignature in definition.entries.keys) {
+      var result = UriPathParser.parse(pathSignature, uri);
+      if (!result.success) {
+        continue;
+      }
+      return SynchronousFuture(AppLocation.fromPathParseResult(result));
+    }
+
+    return AppLocation.fromPathString('/');
+  }
+
+  @override
+  RouteInformation restoreRouteInformation(AppLocation location) {
+    return location.toRouteInformation();
+  }
+}
 
 class AppRouterDelegate extends RouterDelegate<AppLocation>
     with ChangeNotifier {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
+  final RouteDefinition routeDefinition;
   final RouterState routerState;
 
-  AppRouterDelegate(this.routerState)
+  AppRouterDelegate({required this.routeDefinition, required this.routerState})
       : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -43,11 +70,13 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
       const HomePage(),
     ];
 
-    if (state.currentRoute.isSecond) {
-      pages.add(const SecondPage());
-    }
-    if (state.currentRoute.isThird) {
-      pages.add(const ThirdPage());
+    for (final pathSignature in routeDefinition.entries.keys) {
+      var result = UriPathParser.parse(
+          pathSignature, Uri.parse(state.currentRoute.toPath()));
+      if (!result.success) {
+        continue;
+      }
+      pages.add(routeDefinition.entries[pathSignature]!.pageBuilder());
     }
 
     return pages;
@@ -67,4 +96,15 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
     routerState.popRoute();
     return SynchronousFuture<bool>(true);
   }
+}
+
+class AppRouter {
+  final RouteDefinition routeDefinition;
+  final AppRouterDelegate routerDelegate;
+  final AppRouteInformationParser routeInformationParser;
+
+  AppRouter(this.routeDefinition, RouterState routerState)
+      : routerDelegate = AppRouterDelegate(
+            routeDefinition: routeDefinition, routerState: routerState),
+        routeInformationParser = AppRouteInformationParser(routeDefinition);
 }

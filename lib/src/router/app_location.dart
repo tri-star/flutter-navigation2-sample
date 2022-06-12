@@ -1,48 +1,142 @@
 import 'package:flutter/material.dart';
 
-class AppLocation {
-  final String page;
-  final int activeTab;
-
-  AppLocation.home()
-      : page = '/',
-        activeTab = 0;
-  AppLocation.second()
-      : page = '/second',
-        activeTab = 0;
-  AppLocation.third({this.activeTab = 0}) : page = '/third/{$activeTab}';
-
-  bool get isHome => page == '/';
-  bool get isSecond => page == '/second';
-  bool get isThird => page.startsWith('/third');
+class AppLocationHome extends AppLocation {
+  @override
+  String toPath() => '/';
 }
 
-class AppRouteInformationParser extends RouteInformationParser<AppLocation> {
+class AppLocationSecond extends AppLocation {
   @override
-  Future<AppLocation> parseRouteInformation(
-      RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location!);
-    if (uri.path == '/second') {
-      return AppLocation.second();
-    }
-    var regExp = RegExp(r'/third/(?<index>:[0-9]?)');
-    var matched = regExp.firstMatch(uri.path);
-    if (matched != null) {
-      var index = matched.namedGroup('index');
-      return AppLocation.third(
-          activeTab: int.parse(matched.namedGroup('index') ?? '0'));
-    }
-    return AppLocation.home();
+  String toPath() => '/second';
+}
+
+class AppLocationThird extends AppLocation {
+  AppLocationThird({required int activeIndex}) {
+    pathSegments = ['third'];
+    parameters = {'active_index': activeIndex.toString()};
   }
 
   @override
-  RouteInformation restoreRouteInformation(AppLocation routePath) {
-    if (routePath.isSecond) {
-      return const RouteInformation(location: '/second');
+  String get signature => '/third/:active_index';
+
+  @override
+  String toPath() {
+    return UriPathBuilder.build(signature, parameters: parameters);
+  }
+}
+
+/// アプリケーションが開くページの情報を表すオブジェクト。
+/// ルーターはこのオブジェクトの履歴を積み上げてページ遷移履歴を管理する。
+class AppLocation {
+  List<String> pathSegments = [];
+
+  Map<String, String> parameters = {};
+
+  String get signature => toPath();
+
+  AppLocation();
+
+  AppLocation.fromPathString(String path) {
+    var uri = Uri.parse(path);
+    var result = UriPathParser.parse(signature, uri);
+    if (!result.success) {
+      throw ArgumentError('無効なパスが指定されました: $path');
     }
-    if (routePath.isThird) {
-      return const RouteInformation(location: '/third');
+
+    AppLocation.fromPathParseResult(result);
+  }
+
+  AppLocation.fromPathParseResult(ParseResult parseResult) {
+    pathSegments = parseResult.segments;
+    parameters = parseResult.parameters;
+  }
+
+  String toPath() {
+    return '/' + pathSegments.join('/');
+  }
+
+  RouteInformation toRouteInformation() {
+    return RouteInformation(location: toPath());
+  }
+}
+
+class ParseResult {
+  bool success;
+  List<String> segments;
+  Map<String, String> parameters;
+
+  ParseResult(
+      this.success, List<String>? segments, Map<String, String>? parameters)
+      : segments = segments ?? [],
+        parameters = parameters ?? {};
+}
+
+/// URIを/a/b/:id のようなプレースホルダを考慮してパースし、解析できたか、
+/// 解析したパラメータは何だったかを返す。
+class UriPathParser {
+  static ParseResult parse(String pathDefinition, Uri uri) {
+    var result = ParseResult(false, [], {});
+    var normalizedPathDefinition = _normalizePath(pathDefinition);
+    var definitionSegments = normalizedPathDefinition.split('/');
+
+    if (definitionSegments.length != uri.pathSegments.length) {
+      return result;
     }
-    return const RouteInformation(location: '/');
+
+    for (var i = 0; i < definitionSegments.length; i++) {
+      var uriSegment = uri.pathSegments[i];
+      if (_isParameterSegment(definitionSegments[i])) {
+        result.parameters[_parameterName(definitionSegments[i])] = uriSegment;
+      } else {
+        if (definitionSegments[i] != uriSegment) {
+          return ParseResult(false, [], {});
+        }
+      }
+      result.segments.add(uriSegment);
+    }
+    result.success = true;
+    return result;
+  }
+
+  static bool _isParameterSegment(String segment) {
+    return segment.startsWith(':');
+  }
+
+  static String _parameterName(String segment) {
+    return segment.substring(1);
+  }
+
+  static String _normalizePath(String path) {
+    if (path.startsWith('/')) {
+      path = path.substring(1);
+    }
+    return path;
+  }
+}
+
+class UriPathBuilder {
+  static String build(String signature, {Map<String, String>? parameters}) {
+    var segments = signature.split('/');
+    var formattedSegments = [];
+    for (final segment in segments) {
+      if (parameters != null && _isParameterSegment(segment)) {
+        var paramName = _parameterName(segment);
+        if (parameters[paramName] == null) {
+          throw ArgumentError('パラメータが指定されていません: $paramName');
+        }
+        formattedSegments.add(parameters[paramName]);
+      } else {
+        formattedSegments.add(segment);
+      }
+    }
+    return segments.join('/');
+  }
+
+  static bool _isParameterSegment(String segment) {
+    return segment.startsWith(':');
+  }
+
+  static String _parameterName(String segment) {
+    return segment.substring(1);
   }
 }

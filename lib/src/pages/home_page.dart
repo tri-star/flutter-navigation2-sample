@@ -27,7 +27,7 @@ class HomePage extends Page {
                         ),
                         onPressed: () {
                           Provider.of<RouterState>(context, listen: false)
-                              .pushRoute(AppLocation.second());
+                              .pushRoute(AppLocationSecond());
                         },
                         child: const Text('Second Page')),
                     TextButton(
@@ -38,7 +38,7 @@ class HomePage extends Page {
                         ),
                         onPressed: () {
                           Provider.of<RouterState>(context, listen: false)
-                              .pushRoute(AppLocation.third());
+                              .pushRoute(AppLocationThird(activeIndex: 0));
                         },
                         child: const Text('Third Page'))
                   ])));

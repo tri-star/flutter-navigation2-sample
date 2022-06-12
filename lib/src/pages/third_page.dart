@@ -41,7 +41,8 @@ class _ThirdPageState extends State<_ThirdPage>
   @override
   Widget build(BuildContext context) {
     return Consumer<RouterState>(builder: (context, routerState, child) {
-      _tabController.animateTo(routerState.currentRoute.activeTab);
+      _tabController.animateTo(int.parse(
+          routerState.currentRoute.parameters['active_index'] ?? '0'));
       return DefaultLayout(
           TabBarView(controller: _tabController, children: [
             _buildTabA(context),
@@ -56,7 +57,7 @@ class _ThirdPageState extends State<_ThirdPage>
                 Tab(text: 'C'),
               ],
               onTap: (int index) {
-                routerState.pushRoute(AppLocation.third(activeTab: index));
+                routerState.pushRoute(AppLocationThird(activeIndex: index));
               }));
     });
   }
