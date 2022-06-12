@@ -6,12 +6,9 @@ typedef PageBuilder = Page Function();
 /// URIのシグネチャと、対応するページを構築するクロージャを持っている。
 class RouteEntry {
   PageBuilder pageBuilder;
+  RouteTransitionsBuilder? routeTransitionBuilder;
 
-  RouteEntry({required this.pageBuilder});
-
-  bool isRouteMatched() {
-    return true;
-  }
+  RouteEntry({required this.pageBuilder, this.routeTransitionBuilder});
 }
 
 class RouteDefinition {
@@ -21,16 +18,3 @@ class RouteDefinition {
 
   Map<String, RouteEntry> get entries => _routeEntries;
 }
-
-// 最終的な利用イメージ
-// var router = AppRouter({
-//   '/': RouteEntry(
-//     key: ValueKey(''),
-//     pageBuilder: () => 
-//   ),
-// })
-
-// MaterialApp(
-//   routerDelegate: router.routerDelegate,
-//   routeInformationParser: router.routeInformationParser,
-// )

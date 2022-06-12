@@ -67,7 +67,7 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
 
   List<Page> _buildPages(RouterState state) {
     List<Page> pages = [
-      const HomePage(),
+      HomePage(),
     ];
 
     for (final pathSignature in routeDefinition.entries.keys) {

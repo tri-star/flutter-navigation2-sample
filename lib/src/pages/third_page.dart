@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:navigator2_practice/src/pages/app_page.dart';
 import '../layoyuts/default_layout.dart';
 import '../router/router_state.dart';
 import '../router/app_location.dart';
 import 'package:provider/provider.dart';
 
-class ThirdPage extends Page {
-  const ThirdPage() : super(key: const ValueKey('third'));
-
+class ThirdPage extends AppPage {
   @override
-  Route createRoute(BuildContext context) {
-    return PageRouteBuilder(
-        settings: this,
-        pageBuilder: (context, animation, animation2) {
-          return _ThirdPage();
-        });
+  Widget buildPage(BuildContext context) {
+    return _ThirdPage();
   }
 }
 

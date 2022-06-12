@@ -26,9 +26,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     var routeDefinition = RouteDefinition({
-      '/': RouteEntry(pageBuilder: () => const HomePage()),
-      '/second': RouteEntry(pageBuilder: () => const SecondPage()),
-      '/third/:active_index': RouteEntry(pageBuilder: () => const ThirdPage()),
+      '/': RouteEntry(pageBuilder: () => HomePage()),
+      '/second': RouteEntry(pageBuilder: () => SecondPage()),
+      '/third/:active_index': RouteEntry(pageBuilder: () => ThirdPage()),
     });
 
     _router = AppRouter(routeDefinition, _routerState);
