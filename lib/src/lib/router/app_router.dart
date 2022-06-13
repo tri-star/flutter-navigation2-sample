@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import './route_definitions.dart';
+import 'package:navigator2_practice/src/router/route_definition.dart';
 import './router_state.dart';
 import '../router/app_location.dart';
 
@@ -38,8 +38,12 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
 
   final RouteDefinition routeDefinition;
   final RouterState routerState;
+  final AppLocation initialLocation;
 
-  AppRouterDelegate({required this.routeDefinition, required this.routerState})
+  AppRouterDelegate(
+      {required this.routeDefinition,
+      required this.routerState,
+      required this.initialLocation})
       : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -65,7 +69,8 @@ class AppRouterDelegate extends RouterDelegate<AppLocation>
   }
 
   List<Page> _buildPages(RouterState state) {
-    List<Page> pages = [routeDefinition.entries['/']!.pageBuilder()];
+    var initialPath = initialLocation.toPath();
+    List<Page> pages = [routeDefinition.entries[initialPath]!.pageBuilder()];
 
     for (final pathSignature in routeDefinition.entries.keys) {
       var result = UriPathParser.parse(
@@ -100,8 +105,10 @@ class AppRouter {
   final AppRouterDelegate routerDelegate;
   final AppRouteInformationParser routeInformationParser;
 
-  AppRouter(this.routeDefinition, RouterState routerState)
+  AppRouter({required this.routeDefinition, required RouterState routerState})
       : routerDelegate = AppRouterDelegate(
-            routeDefinition: routeDefinition, routerState: routerState),
+            routeDefinition: routeDefinition,
+            routerState: routerState,
+            initialLocation: routerState.currentRoute),
         routeInformationParser = AppRouteInformationParser(routeDefinition);
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'pages/home_page.dart';
-import 'pages/second_page.dart';
-import 'pages/third_page.dart';
-import 'lib/router/route_definitions.dart';
+import 'package:navigator2_practice/src/router/route_definition.dart';
 import 'lib/router/router_state.dart';
 import 'lib/router/app_router.dart';
 import 'router/app_location.dart';
@@ -25,13 +22,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    var routeDefinition = RouteDefinition({
-      '/': RouteEntry(pageBuilder: () => HomePage()),
-      '/second': RouteEntry(pageBuilder: () => SecondPage()),
-      '/third/:active_index': RouteEntry(pageBuilder: () => ThirdPage()),
-    });
+    var routeDefinition = RouteDefinition();
+    routeDefinition.initialize();
 
-    _router = AppRouter(routeDefinition, _routerState);
+    _router =
+        AppRouter(routeDefinition: routeDefinition, routerState: _routerState);
   }
 
   @override

@@ -11,10 +11,14 @@ class RouteEntry {
   RouteEntry({required this.pageBuilder, this.routeTransitionBuilder});
 }
 
-class RouteDefinition {
-  final Map<String, RouteEntry> _routeEntries;
+abstract class BaseRouteDefinition {
+  late Map<String, RouteEntry> _routeEntries;
 
-  RouteDefinition(Map<String, RouteEntry> entries) : _routeEntries = entries;
+  void initialize();
+
+  void setDefinition(Map<String, RouteEntry> definition) {
+    _routeEntries = definition;
+  }
 
   Map<String, RouteEntry> get entries => _routeEntries;
 }
