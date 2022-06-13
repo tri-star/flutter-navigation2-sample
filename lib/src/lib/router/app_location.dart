@@ -52,7 +52,10 @@ class UriPathParser {
   static ParseResult parse(String pathDefinition, Uri uri) {
     var result = ParseResult(false, [], {});
     var normalizedPathDefinition = _normalizePath(pathDefinition);
-    var definitionSegments = normalizedPathDefinition.split('/');
+    var definitionSegments = normalizedPathDefinition
+        .split('/')
+        .where((segment) => segment.isNotEmpty)
+        .toList();
 
     if (definitionSegments.length != uri.pathSegments.length) {
       return result;
