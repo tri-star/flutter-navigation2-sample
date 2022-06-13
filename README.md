@@ -17,3 +17,7 @@ stateDiagram-v2
 ```
 
 ※Thirdページにはタブがあり、Androidのバックボタンなどでタブの選択状態も戻す必要がある
+
+## イメージ
+
+![](./docs/images/preview.gif)
